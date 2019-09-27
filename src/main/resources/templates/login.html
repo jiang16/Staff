@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>员工管理系统</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <!-- Toastr style -->
+    <link href="css/plugins/toastr/toastr.min.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+	
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name">company</h1>
+            </div>
+            <h3>欢迎登录员工管理系统</h3>
+            <br>
+            <form class="m-t" role="form">
+                <div class="form-group">
+                    <input type="text" name="user" id="user" class="form-control" placeholder="用户名" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="psd" id= "psd" class="form-control" placeholder="密码" required="">
+                </div>
+                <button type="button" id="login" class="btn btn-primary block full-width m-b">登录</button>
+                <a data-toggle="modal" href="#modal-form"><small>修改密码</small></a>
+				<p class="m-t"> <small><strong>Copyright</strong> 姜新宇 刘天瑞 &copy; 2019</small> </p>
+            </form>
+			
+			<div id="modal-form" class="modal fade" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="ibox float-e-margins">
+									<h3 class="m-t-none m-b">修改密码</h3>
+									<div class="ibox-content">
+									<form class="form-horizontal">
+										<div class="form-group">
+											<label class="col-lg-3 control-label">旧密码:</label>
+											<div class="col-lg-8">
+												<input id="oldPsd" type="password" placeholder="旧密码" class="form-control">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-lg-3 control-label">新密码:</label>
+											<div class="col-lg-8">
+												<input id="newPsd" type="password" placeholder="新密码" class="form-control">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-lg-3 control-label">确认密码:</label>
+											<div class="col-lg-8">
+												<input id="ackPsd" type="password" placeholder="确认密码" class="form-control">
+											</div>
+										</div>
+										<br>
+											<button class="btn btn-sm btn-default m-t-n-xs pull-right" type="button" data-dismiss="modal">取消</button>
+											<button id="updatePsd" class="btn btn-sm btn-primary m-t-n-xs pull-right" type="button">确认</button>
+									</form>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Toastr script -->
+    <script src="js/plugins/toastr/toastr.min.js"></script>
+	<script>
+		toastr.options = {
+	        positionClass: "toast-top-center", //弹出窗的位置
+	        showDuration: "300", //显示的动画时间
+	        hideDuration: "1000", //消失的动画时间
+	        timeOut: "1600", //展现时间
+		};
+	
+		$("#login").click(function(){
+			$.ajax({
+				type: "post",
+				url: "login",
+				data: {user: $("#user").val(), psd: $("#psd").val()},
+				async: false,
+				success: function(data) {
+					if(data == "ok") {
+						window.location.href = "staff";
+					}else {
+						toastr.error("登录失败！");
+					}
+				}
+			});
+		})
+		
+		$("#updatePsd").click(function(){
+			var newPsd = $("#newPsd").val();
+			var ackPsd = $("#ackPsd").val();
+
+			if(newPsd != ackPsd) {
+				toastr.error("两次密码不一致！");
+			}else {
+				$.ajax({
+					type: "post",
+					url: "updatePsd",
+					data: {oldPsd: $("#oldPsd").val(), newPsd: newPsd},
+					async: false,
+					success: function(data) {
+						if(data == "ok") {
+							toastr.success("密码更新成功！");
+						}else {
+							toastr.error("密码更新失败！");
+						}
+					}
+				});
+			}	
+		})
+	</script>
+</body>
+
+</html>

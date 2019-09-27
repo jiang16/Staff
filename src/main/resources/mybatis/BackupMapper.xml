@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.sdut.dao.BackupMapper">
+
+	<sql id="tableColumns">
+		<![CDATA[
+			id,
+			time,
+			file,
+			path,
+			info
+		]]>
+	</sql>
+	
+	<select id="selectAll" resultType="Backup">
+		SELECT 
+			<include refid="tableColumns" />
+		FROM backup
+	</select>
+	
+	<select id="selectBackup" parameterType="int" resultType="Backup">
+		SELECT 
+			<include refid="tableColumns" />
+		FROM backup
+		WHERE id = #{id}
+	</select>
+	
+	<insert id="add" parameterType="Backup">
+		INSERT INTO backup(
+			time, file, path, info
+		) VALUES(
+			#{time},
+			#{file},
+			#{path},
+			#{info}
+		)
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM backup
+		WHERE id = #{id}
+	</delete>
+</mapper>

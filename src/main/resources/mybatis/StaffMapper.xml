@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.sdut.dao.StaffMapper">
+
+	<sql id="tableColumns">
+		<![CDATA[
+			s_id,
+			name,
+			sex,
+			birth,
+			degree,
+			dept,
+			position,
+			entry,
+			wage,
+			contact
+		]]>
+	</sql>
+	
+	<select id="selectAll" resultType="Staff">
+		SELECT 
+			<include refid="tableColumns" />
+		FROM staff
+	</select>
+	
+	<select id="selectStaff" parameterType="int" resultType="Staff">
+		SELECT
+			<include refid="tableColumns" />
+		FROM staff
+		WHERE s_id = #{s_id}
+	</select>
+	
+	<insert id="add" parameterType="Staff">
+		INSERT INTO staff(
+			name, sex, birth, degree, dept, position, entry, wage, contact
+		) VALUES(
+			#{name},
+			#{sex},
+			#{birth},
+			#{degree},
+			#{dept},
+			#{position},
+			#{entry},
+			#{wage},
+			#{contact}
+		)
+	</insert>
+	
+	<update id="update" parameterType="Staff">
+		UPDATE staff
+		<set>
+			name = #{name},
+			sex = #{sex},
+			birth = #{birth},
+			degree = #{degree},
+			dept = #{dept},
+			position = #{position},
+			entry = #{entry},
+			wage = #{wage},
+			contact = #{contact}
+		</set>
+		<where>
+			s_id = #{s_id}
+		</where>
+	</update>	
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM staff
+		WHERE s_id = #{s_id}
+	</delete>
+	
+	<select id="getSum" resultType="int">
+		SELECT COUNT(*)	
+		FROM staff
+	</select>
+	
+	<select id="avgAge" resultType="int">
+		SELECT AVG(YEAR(now()) - YEAR(birth))
+		FROM staff
+	</select>
+	
+	<select id="avgWage" resultType="float">
+		SELECT AVG(wage)
+		FROM staff
+	</select>
+	
+	<select id="getAge" resultType="int">
+		SELECT YEAR(now()) - YEAR(birth)
+		FROM staff
+	</select>
+	
+	<select id="getWage" resultType="float">
+		SELECT wage
+		FROM staff
+	</select>
+</mapper>

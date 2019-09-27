@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.sdut.dao.AdminMapper">
+
+	<sql id="tableColumns">
+		<![CDATA[
+			user,
+			psd
+		]]>
+	</sql>
+	
+	<select id="select" parameterType="Admin" resultType="Admin">
+		SELECT 
+			<include refid="tableColumns" />
+		FROM admin
+		WHERE user = #{user} AND psd = #{psd}
+	</select>
+	
+	<update id="update" parameterType="String">
+		UPDATE admin
+		<set>
+			psd = #{newPsd}
+		</set>
+		WHERE psd = #{oldPwd}
+	</update>
+</mapper>

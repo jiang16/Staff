@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.sdut.dao.DeptMapper">
+
+	<sql id="tableColumns">
+		<![CDATA[
+			d_id,
+			name,
+			manager,
+			front,
+			found
+		]]>
+	</sql>
+	
+	<select id="selectAll" resultType="Dept">
+		SELECT 
+			<include refid="tableColumns" />
+		FROM dept
+	</select>
+	
+	<select id="getDept" resultType="String">
+		SELECT name
+		FROM dept
+	</select>
+	
+	<select id="selectDept" parameterType="String" resultType="Dept">
+		SELECT
+			<include refid="tableColumns" />
+		FROM dept
+		WHERE d_id = #{d_id}
+	</select>	
+	
+	<insert id="add" parameterType="Dept">
+		INSERT INTO dept(
+			d_id, name, manager, front, found
+		) VALUES(
+			#{d_id},
+			#{name},
+			#{manager},
+			#{front},
+			#{found}
+		)
+	</insert>
+	
+	<update id="update" parameterType="Dept">
+		UPDATE dept
+		<set>
+			name = #{name},
+			manager = #{manager},
+			front = #{front},
+			found = #{found}
+		</set>
+		<where>
+			d_id = #{d_id}
+		</where>
+	</update>	
+	
+	<delete id="delete" parameterType="String">
+		DELETE FROM dept
+		WHERE d_id = #{d_id}
+	</delete>
+</mapper>
